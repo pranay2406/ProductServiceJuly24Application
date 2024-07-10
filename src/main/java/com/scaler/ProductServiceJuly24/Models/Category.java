@@ -5,7 +5,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class Category {
+public class Category extends BaseModel{
 
     private String Name;
     private String Description;
