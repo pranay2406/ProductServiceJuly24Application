@@ -5,10 +5,7 @@ import com.scaler.ProductServiceJuly24.DTO.FakeStoreProductDTO;
 import com.scaler.ProductServiceJuly24.Models.Product;
 import com.scaler.ProductServiceJuly24.Services.FakeStoreProductServices;
 import com.scaler.ProductServiceJuly24.Services.ProductService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,16 +20,30 @@ public class ProductController {
             }
 
 
-            // http://localhost/products/2
+            //http://localhost:8080/products
             @GetMapping("/{id}")
             public Product getProductById(@PathVariable("id") long id){
                 return productService.getSingleProduct(id);
             }
 
+            //http://localhost:8080/products
             @GetMapping()
             public List<Product> getAllProducts(){
                 return productService.getAllProducts();
             }
+
+            //'http://localhost:8080/products?limit=5'
+            @GetMapping("/limit")
+            public List<Product> getProductByLimit(@RequestParam int limit){
+                return productService.getProductByLimit(limit);
+            }
+
+            @GetMapping("/sort")
+            public List<Product> getAllProductInDesc(@RequestParam String sort)
+            {
+                return productService.getAllProductInDesc(sort);
+            }
+
 
            /* public addNewProduct()
             {

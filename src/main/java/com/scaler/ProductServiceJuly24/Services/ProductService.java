@@ -7,5 +7,7 @@ import java.util.List;
 public interface ProductService {
       Product getSingleProduct(Long productId);
       List<Product> getAllProducts();
+      List<Product> getProductByLimit(int limit);
+      List<Product> getAllProductInDesc(String desc);
 
 }
