@@ -44,9 +44,24 @@ public class ProductController {
                 return productService.getAllProductInDesc(sort);
             }
 
+            @GetMapping("/categories")
+            public List<String> getAllProductCategory(){
+                return productService.getAllProductCategory();
+            }
 
-           /* public addNewProduct()
-            {
+            @GetMapping("/category/{categoryName}")
+            public List<Product> getProductByCategory(@PathVariable("categoryName") String categoryName){
+                return productService.getProductByCategory(categoryName);
+            }
 
-            }*/
+            @PutMapping("/{id}")
+            public Product updateProduct(@PathVariable("id") long id, @RequestBody Product product){
+                return null;
+            }
+
+            @PatchMapping("/id")
+            public Product replaceProduct(@PathVariable("id") long id, @RequestBody Product product){
+                return null;
+            }
+
 }

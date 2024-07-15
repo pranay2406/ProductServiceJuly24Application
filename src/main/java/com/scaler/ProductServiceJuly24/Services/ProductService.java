@@ -9,5 +9,9 @@ public interface ProductService {
       List<Product> getAllProducts();
       List<Product> getProductByLimit(int limit);
       List<Product> getAllProductInDesc(String desc);
+      List<String> getAllProductCategory();
+      List<Product> getProductByCategory(String category);
+      Product updateProduct(Long productId, Product product);
+      Product replaceProduct(Long productId, Product product);
 
 }

@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class FakeStoreProductServices implements ProductService{
@@ -31,6 +32,7 @@ public class FakeStoreProductServices implements ProductService{
          // call fakestore productService to fetch all the products  ---> http call
         FakeStoreProductDTO[] allproducts = restTemplate.getForObject("https://fakestoreapi.com/products", FakeStoreProductDTO[].class);
           List<Product> products = new ArrayList<>();
+
           for (FakeStoreProductDTO fakeStoreProductDTO : allproducts) {
               products.add(convertFakeProductDTOToProduct(fakeStoreProductDTO));
           }
@@ -66,6 +68,41 @@ public class FakeStoreProductServices implements ProductService{
 
         return products;
     }
+
+    @Override
+    public List<String> getAllProductCategory() {
+         FakeStoreProductDTO[] getAllProduct = restTemplate.getForObject("https://fakestoreapi.com/products/", FakeStoreProductDTO[].class);
+         List<String> productNames = new ArrayList<>();
+          for(FakeStoreProductDTO fakeStoreProductDTO : getAllProduct){
+              productNames.add(fakeStoreProductDTO.getCategory());
+          }
+         return productNames.stream().distinct().collect(Collectors.toList());
+        //removing duplicates in above line from the help of stream API
+    }
+
+    @Override
+    public List<Product> getProductByCategory(String categoryName) {
+         FakeStoreProductDTO[] getCategory = restTemplate.getForObject("https://fakestoreapi.com/products/", FakeStoreProductDTO[].class);
+         List<Product> products = new ArrayList<>();
+          for(FakeStoreProductDTO fakeStoreProductDTO: getCategory)
+          {
+              if(fakeStoreProductDTO.getCategory().equals(categoryName)) {
+                  products.add(convertFakeProductDTOToProduct(fakeStoreProductDTO));
+              }
+          }
+        return products;
+    }
+
+    @Override
+    public Product updateProduct(Long productId, Product product) {
+        return null;
+    }
+
+    @Override
+    public Product replaceProduct(Long productId, Product product) {
+        return null;
+    }
+
 
     private List<Product> ProductsInDescendingOrder(List<Product> products) {
         // Sort products in descending order by id
