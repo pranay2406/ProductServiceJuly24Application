@@ -5,6 +5,8 @@ import com.scaler.ProductServiceJuly24.DTO.FakeStoreProductDTO;
 import com.scaler.ProductServiceJuly24.Models.Product;
 import com.scaler.ProductServiceJuly24.Services.FakeStoreProductServices;
 import com.scaler.ProductServiceJuly24.Services.ProductService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -13,6 +15,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/products")
 public class ProductController {
+
             private ProductService productService;
 
             public ProductController(ProductService productService) {
@@ -22,8 +25,12 @@ public class ProductController {
 
             //http://localhost:8080/products
             @GetMapping("/{id}")
-            public Product getProductById(@PathVariable("id") long id){
-                return productService.getSingleProduct(id);
+            public ResponseEntity<Product> getProductById(@PathVariable("id") long id){
+                ResponseEntity<Product> response = new ResponseEntity<>(
+                        productService.getSingleProduct(id),
+                        HttpStatus.OK
+                );
+                return response;
             }
 
             //http://localhost:8080/products
@@ -54,14 +61,13 @@ public class ProductController {
                 return productService.getProductByCategory(categoryName);
             }
 
-            @PutMapping("/{id}")
-            public Product updateProduct(@PathVariable("id") long id, @RequestBody Product product){
-                return null;
+            @PatchMapping("/{id}")
+             public Product updateProduct(@PathVariable("id") Long id, @RequestBody Product product) {
+                 return productService.updateProduct(id, product);
             }
 
-            @PatchMapping("/id")
-            public Product replaceProduct(@PathVariable("id") long id, @RequestBody Product product){
-                return null;
-            }
-
+//            @PutMapping("")
+//            public Product replaceProduct(@PathVariable("id") long id, @RequestBody Product product){
+//                return productService.replaceProduct(id, product);
+//            }
 }

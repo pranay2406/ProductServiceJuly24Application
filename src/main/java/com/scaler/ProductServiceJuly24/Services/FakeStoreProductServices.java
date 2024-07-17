@@ -3,7 +3,13 @@ package com.scaler.ProductServiceJuly24.Services;
 import com.scaler.ProductServiceJuly24.DTO.FakeStoreProductDTO;
 import com.scaler.ProductServiceJuly24.Models.Category;
 import com.scaler.ProductServiceJuly24.Models.Product;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
+import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.HttpMessageConverterExtractor;
+import org.springframework.web.client.RequestCallback;
+import org.springframework.web.client.ResponseExtractor;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.*;
@@ -13,6 +19,7 @@ import java.util.stream.Collectors;
 public class FakeStoreProductServices implements ProductService{
 
      private  RestTemplate restTemplate;
+
      public FakeStoreProductServices(RestTemplate restTemplate) {
          this.restTemplate = restTemplate;
      }
@@ -94,12 +101,19 @@ public class FakeStoreProductServices implements ProductService{
     }
 
     @Override
-    public Product updateProduct(Long productId, Product product) {
-        return null;
+    public Product updateProduct(Long id, Product product) {
+    //patch call
+
+        RequestCallback requestCallback = restTemplate.httpEntityCallback(product, FakeStoreProductDTO.class);
+        HttpMessageConverterExtractor<FakeStoreProductDTO> responseType = new HttpMessageConverterExtractor(FakeStoreProductDTO.class,restTemplate.getMessageConverters());
+        FakeStoreProductDTO response = restTemplate.execute("https://fakestoreapi.com/products" + id,HttpMethod.PATCH, requestCallback,responseType);
+        return convertFakeProductDTOToProduct(response);
     }
 
     @Override
     public Product replaceProduct(Long productId, Product product) {
+        //put
+
         return null;
     }
 
